@@ -5,8 +5,7 @@ import time
 import subprocess
 import logging
 
-logging.basicConfig(filename='/var/log/port_monitor.log', level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='/var/log/port_monitor.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def check_open_ports():
     try:
@@ -26,7 +25,7 @@ def monitor_ports(interval):
 
 if __name__ == "__main__":
     try:
-        monitoring_interval = 60  
+        monitoring_interval = 60
         logging.info("Demon monitorujący porty uruchomiony.")
         monitor_ports(monitoring_interval)
     except KeyboardInterrupt:
