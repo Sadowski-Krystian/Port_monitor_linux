@@ -16,25 +16,6 @@ class Daemon:
         self.pid_file = pid_file
         self.interval = interval
 
-    def daemonize(self):
-        if os.fork() > 0:
-            sys.exit(0)
-        os.setsid()
-        if os.fork() > 0:
-            sys.exit(0)
-
-        sys.stdout.flush()
-        sys.stderr.flush()
-        stdin = open('/dev/null', 'r')
-        stdout = open('/dev/null', 'a+')
-        stderr = open('/dev/null', 'a+')
-        os.dup2(stdin.fileno(), sys.stdin.fileno())
-        os.dup2(stdout.fileno(), sys.stdout.fileno())
-        os.dup2(stderr.fileno(), sys.stderr.fileno())
-
-        file = open(self.pid_file, 'w')
-        file.write(str(os.getpid()))
-
     def delpid(self):
         os.remove(self.pid_file)
 
@@ -44,7 +25,6 @@ class Daemon:
             sys.exit(1)
 
         logging.info("Uruchamianie demona...")
-        self.daemonize()
         self.run()
 
     def stop(self, *args):
@@ -78,7 +58,6 @@ class Daemon:
         except subprocess.CalledProcessError as e:
             logging.error(f"Błąd podczas sprawdzania portów: {e}")
             return None
-
 
 if __name__ == "__main__":
     PID_FILE = '/var/run/port_monitor.pid'
